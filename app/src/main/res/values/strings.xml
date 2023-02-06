@@ -33,4 +33,5 @@
     <string name="IMV">TODO</string>
     <string name="profileimg">TODO</string>
     <string name="delete_account">Delete account</string>
+    <string name="prefs_file">com.estebi.fogo1.PREFERENCE_FILE_KEY</string>
 </resources>

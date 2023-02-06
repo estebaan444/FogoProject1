@@ -9,6 +9,12 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.estebi.fogo1.databinding.ActivityMain2Binding
 
+
+enum class ProviderType {
+    BASIC,
+    GOOGLE
+}
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMain2Binding
