@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "926952536344",
+    "project_id": "fogo1-3b489",
+    "storage_bucket": "fogo1-3b489.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:926952536344:android:adf01f88fa1449e047066d",
+        "android_client_info": {
+          "package_name": "com.estebi.fogo1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "926952536344-0hm68ms3vcmlot4v92jvh75ihp7p8sua.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2x6m9gXbbu13BWNIA6Qvd3LJ9Uro1yRs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "926952536344-0hm68ms3vcmlot4v92jvh75ihp7p8sua.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
