@@ -23,7 +23,6 @@ import com.google.firebase.ktx.Firebase
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
-    private val firebaseAuth = FirebaseAuth.getInstance()
     private val GOOGLE_SIGN_IN = 100
 
 
