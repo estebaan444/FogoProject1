@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -72,7 +73,7 @@ class LoginActivity : AppCompatActivity() {
     private fun setup() {
         title = "Autenticación"
         val loginBtn = findViewById<Button>(R.id.loginBtn)
-        val googleButton = findViewById<Button>(R.id.googleButton)
+        val googleButton = findViewById<ImageButton>(R.id.googleButton)
         val email = findViewById<EditText>(R.id.EmailAddress)
         val password = findViewById<EditText>(R.id.TextPassword)
 

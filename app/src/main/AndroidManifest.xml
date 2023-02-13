@@ -16,7 +16,9 @@
         android:theme="@style/Theme.Fogo1"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-
+        <activity
+            android:name=".UserDataActivity"
+            android:exported="false" />
         <activity
             android:name=".SplashScreenActivity"
             android:exported="true"

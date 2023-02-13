@@ -5,6 +5,7 @@
     android:id="@+id/loginLayoutID"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#f5bfd4"
     tools:context=".LoginActivity">
 
     <TextView
@@ -13,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:text="@string/login"
-        android:textColor="#000000"
+        android:textColor="@color/purple_500"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.089"
@@ -25,6 +26,7 @@
         android:layout_width="139dp"
         android:layout_height="74dp"
         android:layout_marginStart="28dp"
+        android:textColor="@color/purple_500"
         android:layout_marginTop="52dp"
         android:text="@string/textLogin"
         android:textSize="18sp"
@@ -38,6 +40,8 @@
         android:layout_marginTop="64dp"
         android:autofillHints=""
         android:ems="15"
+        android:drawableStart="@drawable/account"
+        android:textColor="@color/purple_500"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
         android:textSize="15sp"
@@ -52,6 +56,7 @@
         android:layout_marginTop="44dp"
         android:autofillHints=""
         android:ems="10"
+        android:textColor="@color/purple_500"
         android:hint="@string/password"
         android:inputType="textPassword"
         android:textSize="15sp"
@@ -61,14 +66,17 @@
 
     <Button
         android:id="@+id/loginBtn"
-        android:layout_width="351dp"
-        android:layout_height="58dp"
-        android:layout_marginTop="40dp"
+        android:layout_width="280dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="41dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="47dp"
         android:text="@string/loginBtn"
         android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/textView3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TextPassword"
+        app:layout_constraintVertical_bias="1.0"
         tools:ignore="DuplicateSpeakableTextCheck,TextContrastCheck" />
 
     <TextView
@@ -77,6 +85,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:text="@string/dontHaveAcounttxt"
+        android:textColor="@color/purple_500"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -87,7 +96,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="@string/sign_inBtn"
+        android:text="Register"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -97,16 +106,17 @@
         app:layout_constraintVertical_bias="0.0"
         tools:ignore="TextContrastCheck" />
 
-    <Button
+    <ImageButton
         android:id="@+id/googleButton"
-        android:layout_width="351dp"
-        android:layout_height="58dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/white"
-        android:drawableStart="@mipmap/google"
-        android:text="Google"
-        android:textColor="#000000"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="20dp"
+        android:background="@null"
+        app:layout_constraintEnd_toStartOf="@+id/loginBtn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/TextPassword"
+        app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
