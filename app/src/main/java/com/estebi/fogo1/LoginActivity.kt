@@ -24,6 +24,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         supportActionBar?.hide()
+        
 
         val registerButton = findViewById<Button>(R.id.singUpButton)
         registerButton.setOnClickListener {
