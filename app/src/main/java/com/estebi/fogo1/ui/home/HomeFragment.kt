@@ -1,5 +1,6 @@
 package com.estebi.fogo1.ui.home
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.estebi.fogo1.R
 import com.estebi.fogo1.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -39,4 +41,6 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+
 }

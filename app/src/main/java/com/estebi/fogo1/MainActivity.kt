@@ -26,6 +26,16 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMain2Binding.inflate(layoutInflater)
         setContentView(binding.root)
+        //Setup
+        val bundle = intent.extras
+        val email = bundle?.getString("email")
+        val provider = bundle?.getString("provider")
+
+        //Guardado de datos
+        val prefs = getSharedPreferences(getString(R.string.prefs_file), MODE_PRIVATE).edit()
+        prefs.putString("email", email)
+        prefs.putString("provider", provider)
+        prefs.apply()
 
         val navView: BottomNavigationView = binding.navView
 

@@ -1,15 +1,15 @@
 package com.estebi.fogo1.ui.user
 
-import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.estebi.fogo1.LoginActivity
+import com.estebi.fogo1.R
 import com.estebi.fogo1.SignInActivity
 import com.estebi.fogo1.databinding.FragmentUserBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -40,8 +40,10 @@ class UserFragment : Fragment() {
         binding.textUser.text = user.email
 
         binding.logout.setOnClickListener {
+            val prefs = requireContext().getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
+            prefs.clear()
+            prefs.apply()
             FirebaseAuth.getInstance().signOut()
-            Log.w(ContentValues.TAG, FirebaseAuth.getInstance().signOut().toString())
             val intent = Intent (activity, LoginActivity::class.java)
             activity?.startActivity(intent)
             activity?.finish()
@@ -51,6 +53,9 @@ class UserFragment : Fragment() {
             FirebaseAuth.getInstance().currentUser?.delete()
             Toast.makeText(context, "The account has been deleted",
                 Toast.LENGTH_SHORT).show()
+            val prefs = requireContext().getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
+            prefs.clear()
+            prefs.apply()
             val intent = Intent (activity, SignInActivity::class.java)
             activity?.startActivity(intent)
             activity?.finish()
