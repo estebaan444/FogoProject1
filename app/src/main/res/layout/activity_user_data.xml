@@ -4,61 +4,84 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f5bfd4"
+    android:background="@color/purple_500"
     tools:context=".UserDataActivity">
 
-    <TextView
-        android:id="@+id/dataTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:text="Introduce your data"
-        android:textColor="#000000"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/nameUser"
-        android:layout_width="362dp"
-        android:layout_height="55dp"
-        android:layout_marginBottom="36dp"
-        android:autofillHints=""
-        android:ems="15"
-        android:hint="Name"
-        android:inputType="textEmailAddress"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@+id/startExploringBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/floatingActionButton" />
-
-    <Button
-        android:id="@+id/startExploringBtn"
-        android:layout_width="363dp"
-        android:layout_height="59dp"
-        android:layout_marginBottom="320dp"
-        android:text="Start Exploring!"
-        android:textColor="#FFFFFF"
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="244dp"
+        android:layout_height="88dp"
+        android:contentDescription="TODO"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.466"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameUser"
-        tools:ignore="DuplicateSpeakableTextCheck,TextContrastCheck" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:layout_width="94dp"
-        android:layout_height="83dp"
-        android:layout_marginTop="127dp"
-        android:layout_marginBottom="86dp"
-        android:clickable="true"
-        app:layout_constraintBottom_toTopOf="@+id/nameUser"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent=".27"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/account_circle_outline" />
+        app:layout_constraintVertical_bias="0.065"
+        app:srcCompat="@drawable/logo"
+        tools:ignore="ImageContrastCheck" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/vie_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent=".78"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1">
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="144dp"
+            android:text="@string/introduce_your_data"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/gotItUserData"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="41dp"
+            android:layout_marginEnd="40dp"
+            android:background="@drawable/btn_bg"
+            android:text="@string/got_it"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addUserNameData"
+            tools:ignore="TextContrastCheck,DuplicateSpeakableTextCheck" />
+
+        <EditText
+            android:id="@+id/addUserNameData"
+            android:layout_width="326dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="224dp"
+            android:autofillHints=""
+            android:background="@drawable/edit_text_bg"
+            android:ems="10"
+            android:hint="@string/addUserNameData"
+            android:inputType="textEmailAddress"
+            android:minHeight="48dp"
+            android:paddingStart="20dp"
+            android:textColorHint="#757575"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.529"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

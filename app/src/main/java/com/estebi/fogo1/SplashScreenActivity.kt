@@ -22,6 +22,7 @@ private fun startTimer(){
         override fun onFinish() {
             val intent = Intent(applicationContext, LoginActivity::class.java).apply {}
             startActivity(intent)
+            finish()
         }
     }.start()
 }

@@ -1,6 +1,8 @@
 package com.estebi.fogo1
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -8,6 +10,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.estebi.fogo1.databinding.ActivityMain2Binding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 enum class ProviderType {
@@ -37,6 +41,8 @@ class MainActivity : AppCompatActivity() {
         prefs.putString("provider", provider)
         prefs.apply()
 
+        checkUserData()
+
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main2)
@@ -49,5 +55,30 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    private fun checkUserData(){
+        val currentUse= FirebaseAuth.getInstance().currentUser?.email
+
+        val mFireStore = FirebaseFirestore.getInstance()
+        val docRef =mFireStore.collection("Users").document("$currentUse")
+        docRef.get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val document = task.result
+                if(document != null) {
+                    if (document.exists()) {
+                        Log.d("TAG", "Document already exists.")
+                    } else {
+                        Log.d("TAG", "Document doesn't exist.")
+                        Intent(this, UserDataActivity::class.java).apply {
+                            startActivity(this)
+                        }
+                        finish()
+                    }
+                }
+            } else {
+                Log.d("TAG", "Error: ", task.exception)
+            }
+        }
     }
 }

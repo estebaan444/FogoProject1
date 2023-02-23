@@ -1,29 +1,30 @@
 package com.estebi.fogo1
 
-import android.content.ContentValues.TAG
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.estebi.fogo1.models.User
 import com.estebi.fogo1.repository.auth.AuthRepository
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
+
 
 class SignInActivity : AppCompatActivity() {
-
+    val GOOGLE_SIGN_IN2 = 100
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
         supportActionBar?.hide();
 
         setup()
-        val loginBtn = findViewById<Button>(R.id.loginBtnSig)
+
+        val loginBtn = findViewById<TextView>(R.id.goToLogin)
         loginBtn.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
@@ -32,34 +33,14 @@ class SignInActivity : AppCompatActivity() {
     }
 
 
-    private fun sendEmailVerification() {
-        //get instance of firebase auth
-        val firebaseAuth = FirebaseAuth.getInstance()
-        //get current user
-        val firebaseUser = firebaseAuth.currentUser
-        //send email verification
-        firebaseUser!!.sendEmailVerification()
-            .addOnSuccessListener {
-                val intent = Intent(this, LoginActivity::class.java)
-                Toast.makeText(
-                    baseContext, "Registration successful, wait for the email verification",
-                    Toast.LENGTH_SHORT
-                ).show()
-                startActivity(intent)
-                finish()
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Error to send verify" + e.message, Toast.LENGTH_SHORT)
-                    .show()
-            }
-    }
-
     private fun setup() {
-        title = "Autenticación"
-        val signInBtn = findViewById<Button>(R.id.signinBtn)
-        val email = findViewById<EditText>(R.id.EmailAddressSig)
-        val password = findViewById<EditText>(R.id.TextPasswordSig)
-        val passwordCheck = findViewById<EditText>(R.id.textPasswordSig)
+        title = "Register"
+        val signInBtn = findViewById<Button>(R.id.registerButton)
+        val googleSignInBtn = findViewById<ImageButton>(R.id.googleButtonRegister)
+        val email = findViewById<EditText>(R.id.EmailAddressRegister)
+        val name = findViewById<EditText>(R.id.NameRegisterUser)
+        val password = findViewById<EditText>(R.id.TextPasswordRegisterRepeat)
+        val passwordCheck = findViewById<EditText>(R.id.TextPasswordRegister)
 
         signInBtn.setOnClickListener {
             if (email.text.isNotEmpty() && password.text.isNotEmpty() && passwordCheck.text.isNotEmpty()) {
@@ -67,20 +48,32 @@ class SignInActivity : AppCompatActivity() {
                     .createUserWithEmailAndPassword(email.text.toString(), password.text.toString())
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
-                            showHome(it.result?.user?.email ?: "", ProviderType.BASIC)
-                            sendEmailVerification()
                             val user = User(
                                 email.text.toString(),
-                                "Name",
-                                "Path"
+                                name.text.toString(),
+                                "pathImg"
                             )
+                            val user1 = FirebaseAuth.getInstance().currentUser
+                            user1?.reload()
+                            sendEmailVerification(user1!!)
                             AuthRepository.addUserCollection(user)
+                            Toast.makeText(this, "Succesful registration", Toast.LENGTH_LONG).show()
                         } else {
                             showAlert()
                         }
                     }
             }
         }
+        googleSignInBtn.setOnClickListener {
+            val googleConf = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build()
+            val googleClient = GoogleSignIn.getClient(this, googleConf)
+            googleClient.signOut()
+            startActivityForResult(googleClient.signInIntent, GOOGLE_SIGN_IN2)
+        }
+
 
     }
 
@@ -99,5 +92,50 @@ class SignInActivity : AppCompatActivity() {
             putExtra("provider", provider.name)
         }
         startActivity(homeIntent)
+        finish()
+    }
+
+    private fun sendEmailVerification(user: FirebaseUser) {
+        user.sendEmailVerification()
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    Toast.makeText(
+                        baseContext,
+                        "Verification email sent to " + user.email,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(
+                        baseContext,
+                        "Failed to send verification email.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == GOOGLE_SIGN_IN2) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.getResult(ApiException::class.java)
+                if (account != null) {
+                    val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+                    FirebaseAuth.getInstance().signInWithCredential(credential)
+                        .addOnCompleteListener {
+                            if (it.isSuccessful) {
+                                showHome(account.email ?: "", ProviderType.GOOGLE)
+                            } else {
+                                showAlert()
+                            }
+                        }
+                }
+            } catch (e: ApiException) {
+                showAlert()
+            }
+        }
     }
 }

@@ -34,4 +34,12 @@
     <string name="profileimg">TODO</string>
     <string name="delete_account">Delete account</string>
     <string name="prefs_file">com.estebi.fogo1.PREFERENCE_FILE_KEY</string>
+    <string name="need_an_account">Need an account?</string>
+    <string name="emailLabel">Email</string>
+    <string name="sing_up">SING UP</string>
+    <string name="loginBtnTxt">LOGIN</string>
+    <string name="passwordd">Password</string>
+    <string name="addUserNameData">Name</string>
+    <string name="introduce_your_data">Introduce Your Data!</string>
+    <string name="got_it">GOT IT!</string>
 </resources>

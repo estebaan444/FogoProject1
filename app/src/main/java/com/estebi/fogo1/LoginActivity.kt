@@ -3,10 +3,7 @@ package com.estebi.fogo1
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -19,14 +16,12 @@ import com.google.firebase.auth.GoogleAuthProvider
 
 class LoginActivity : AppCompatActivity() {
     val GOOGLE_SIGN_IN = 100
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         supportActionBar?.hide()
-        
 
-        val registerButton = findViewById<Button>(R.id.singUpButton)
+        val registerButton = findViewById<TextView>(R.id.singUpButton)
         registerButton.setOnClickListener {
             val intent = Intent(this, SignInActivity::class.java)
             startActivity(intent)
@@ -39,30 +34,11 @@ class LoginActivity : AppCompatActivity() {
         analytics.logEvent("InitScreen", bundle)
 
         //Setup
-        setup()
-
-        sesion()
+        setupLogin()
+        sesionLogin()
     }
 
-
-    private fun checkIfEmailVerified() {
-        val user = FirebaseAuth.getInstance().currentUser
-        if (user!!.isEmailVerified) {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
-            Toast.makeText(this, "Successfully logged in", Toast.LENGTH_SHORT).show()
-        } else {
-            FirebaseAuth.getInstance().signOut()
-            Toast.makeText(this, "Verify your account", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    override fun onStart() {
-        super.onStart()
-    }
-
-    private fun sesion() {
+    private fun sesionLogin() {
         val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
         val email = prefs.getString("email", null)
         val provider = prefs.getString("provider", null)
@@ -71,7 +47,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun setup() {
+    private fun setupLogin() {
         title = "Autenticación"
         val loginBtn = findViewById<Button>(R.id.loginBtn)
         val googleButton = findViewById<ImageButton>(R.id.googleButton)
@@ -84,9 +60,14 @@ class LoginActivity : AppCompatActivity() {
                     .signInWithEmailAndPassword(email.text.toString(), password.text.toString())
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
-                            showHome(it.result?.user?.email ?: "", ProviderType.BASIC)
+                            if (it.result?.user?.isEmailVerified!!) {
+                                showHome(it.result?.user?.email ?: "", ProviderType.BASIC)
+                            } else {
+                                Toast.makeText(this, "Please verify your email", Toast.LENGTH_LONG)
+                                    .show()
+                            }
                         } else {
-                            showAlert()
+                            showAlertLogin()
                         }
                     }
             }
@@ -96,13 +77,13 @@ class LoginActivity : AppCompatActivity() {
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build()
-            val googleClient = com.google.android.gms.auth.api.signin.GoogleSignIn.getClient(this, googleConf)
+            val googleClient = GoogleSignIn.getClient(this, googleConf)
             googleClient.signOut()
             startActivityForResult(googleClient.signInIntent, GOOGLE_SIGN_IN)
         }
     }
 
-    private fun showAlert() {
+    private fun showAlertLogin() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Error")
         builder.setMessage("An error ocurred during the google login")
@@ -117,6 +98,7 @@ class LoginActivity : AppCompatActivity() {
             putExtra("provider", provider.name)
         }
         startActivity(homeIntent)
+        finish()
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -130,12 +112,12 @@ class LoginActivity : AppCompatActivity() {
                         if (it.isSuccessful) {
                             showHome(account.email ?: "", ProviderType.GOOGLE)
                         } else {
-                            showAlert()
+                            showAlertLogin()
                         }
                     }
                 }
             }catch (e: ApiException){
-                showAlert()
+                showAlertLogin()
             }
         }
     }
