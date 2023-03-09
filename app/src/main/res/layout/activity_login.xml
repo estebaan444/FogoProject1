@@ -7,7 +7,7 @@
     android:background="@color/purple_500"
     tools:context=".LoginActivity">
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/userImageView"
         android:layout_width="244dp"
         android:layout_height="88dp"
         android:contentDescription="TODO"

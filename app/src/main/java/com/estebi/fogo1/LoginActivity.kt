@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 
 
+@Suppress("DEPRECATION")
 class LoginActivity : AppCompatActivity() {
     val GOOGLE_SIGN_IN = 100
     override fun onCreate(savedInstanceState: Bundle?) {

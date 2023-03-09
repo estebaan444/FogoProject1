@@ -1,5 +1,6 @@
 package com.estebi.fogo1
 
+import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +11,10 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.estebi.fogo1.databinding.ActivityMain2Binding
+import com.estebi.fogo1.repository.auth.AuthRepository.Companion.db
+import com.estebi.fogo1.repository.user.CheckUserData.Companion.checkUserDataGoogle
+import com.estebi.fogo1.ui.userSignUpData.UserDataActivity
+import com.estebi.fogo1.ui.userSignUpData.UserDataSignUpActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -26,7 +31,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.setDisplayShowHomeEnabled(true);
-        supportActionBar?.setIcon(R.drawable.fogo);
+
+
 
         binding = ActivityMain2Binding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -35,37 +41,49 @@ class MainActivity : AppCompatActivity() {
         val email = bundle?.getString("email")
         val provider = bundle?.getString("provider")
 
+        Log.d("TAG", "onCreate: " + checkUserDataGoogle())
+
         //Guardado de datos
         val prefs = getSharedPreferences(getString(R.string.prefs_file), MODE_PRIVATE).edit()
         prefs.putString("email", email)
         prefs.putString("provider", provider)
         prefs.apply()
 
+        if (FirebaseAuth.getInstance().currentUser?.email == null) {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            prefs.clear()
+            prefs.apply()
+            finish()
+        }
+
         checkUserData()
 
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main2)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_search, R.id.navigation_addPost, R.id.navigation_user
+                R.id.navigation_home,
+                R.id.navigation_search,
+                R.id.navigation_addPost,
+                R.id.navigation_user
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
 
-    private fun checkUserData(){
-        val currentUse= FirebaseAuth.getInstance().currentUser?.email
+    private fun checkUserData() {
+        val currentUse = FirebaseAuth.getInstance().currentUser?.email
 
         val mFireStore = FirebaseFirestore.getInstance()
-        val docRef =mFireStore.collection("Users").document("$currentUse")
+        val docRef = mFireStore.collection("Users").document("$currentUse")
+
         docRef.get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val document = task.result
-                if(document != null) {
+                if (document != null) {
                     if (document.exists()) {
                         Log.d("TAG", "Document already exists.")
                     } else {
@@ -80,5 +98,24 @@ class MainActivity : AppCompatActivity() {
                 Log.d("TAG", "Error: ", task.exception)
             }
         }
+
+        db.collection("Users")
+            .addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    Log.w(ContentValues.TAG, "Listen failed.", e)
+                    return@addSnapshotListener
+                }
+                val checkStringImg =""
+                if (snapshot != null) {
+                    for (document in snapshot) {
+                        if (document["userImg"].toString() == checkStringImg) {
+                            Intent(this, UserDataSignUpActivity::class.java).apply {
+                                startActivity(this)
+                            }
+                            finish()
+                        }
+                    }
+                }
+            }
     }
 }

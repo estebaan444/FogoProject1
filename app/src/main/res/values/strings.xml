@@ -42,4 +42,11 @@
     <string name="addUserNameData">Name</string>
     <string name="introduce_your_data">Introduce Your Data!</string>
     <string name="got_it">GOT IT!</string>
+    <string name="desc">desc</string>
+    <string name="imgeviewposts">TODO</string>
+    <string name="add_post_TITLE">Add post!</string>
+    <string name="AddPostHint">Add title</string>
+    <string name="description">Description</string>
+    <string name="up_post_button">Up post!</string>
+    <string name="todos">TODO</string>
 </resources>

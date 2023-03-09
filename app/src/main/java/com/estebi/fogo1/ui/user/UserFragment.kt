@@ -1,23 +1,30 @@
 package com.estebi.fogo1.ui.user
 
-import android.content.ContentValues.TAG
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import com.estebi.fogo1.LoginActivity
 import com.estebi.fogo1.R
-import com.estebi.fogo1.SignInActivity
 import com.estebi.fogo1.databinding.FragmentUserBinding
-import com.estebi.fogo1.repository.auth.AuthRepository.Companion.db
+import com.estebi.fogo1.models.Posts
+import com.estebi.fogo1.repository.posts.PostsRepository
+import com.estebi.fogo1.ui.user.adapter.MyPostsAdapter
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.squareup.picasso.Picasso
 
 
 class UserFragment : Fragment() {
@@ -28,6 +35,9 @@ class UserFragment : Fragment() {
 
     private lateinit var user: FirebaseUser
 
+    private val db = Firebase.firestore
+
+    private val myPostsAdapter = MyPostsAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,59 +48,117 @@ class UserFragment : Fragment() {
         val root: View = binding.root
         (activity as AppCompatActivity).supportActionBar?.hide()
 
-        user = FirebaseAuth.getInstance().currentUser!!;
-        binding.textUser.text = user.email
-        val docRef = db.collection("Users").document(FirebaseAuth.getInstance().currentUser?.email.toString())
-        docRef.get()
+        user = Firebase.auth.currentUser!!;
+
+        db.collection("Users").document(FirebaseAuth.getInstance().currentUser?.email.toString())
+            .get()
             .addOnSuccessListener { document ->
                 if (document != null) {
-                    //Los datos los cojemos desde aqui:
-                    Log.d(TAG, document.data?.get("userName").toString())
-                } else {
-                    Log.d(TAG, "No such document")
+                    binding.userNameProfile.text = document.data?.get("userName").toString()
+                    val userImg = document.data?.get("userImg").toString()
+                    Picasso.get().load(userImg).into(binding.profileImage)
+                    binding.textUser.text = user.email
                 }
             }
-            .addOnFailureListener { exception ->
-                Log.d(TAG, "get failed with ", exception)
+            .addOnFailureListener {
+                binding.userNameProfile.text = ""
+                binding.textUser.text = ""
+                binding.profileImage.setImageResource(R.drawable.account)
             }
 
-        binding.logout.setOnClickListener {
-            val prefs = requireContext().getSharedPreferences(
-                getString(R.string.prefs_file),
-                Context.MODE_PRIVATE
-            ).edit()
-            prefs.clear()
-            prefs.apply()
-            FirebaseAuth.getInstance().signOut()
-            val intent = Intent(activity, LoginActivity::class.java)
-            activity?.finish()
-            activity?.startActivity(intent)
+        binding.configButton.setOnClickListener {
+            bottomSheetDialog()
         }
-
-        binding.deleteAccount.setOnClickListener {
-            db.collection("Users")
-                .document(FirebaseAuth.getInstance().currentUser?.email.toString())
-                .delete()
-                .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully deleted!") }
-                .addOnFailureListener { e -> Log.w(TAG, "Error deleting document", e) }
-            FirebaseAuth.getInstance().currentUser?.delete()
-            Toast.makeText(
-                context, "The account has been deleted",
-                Toast.LENGTH_SHORT
-            ).show()
-            val prefs = requireContext().getSharedPreferences(
-                getString(R.string.prefs_file),
-                Context.MODE_PRIVATE
-            ).edit()
-            prefs.clear()
-            prefs.apply()
-
-            val intent = Intent(activity, SignInActivity::class.java)
-            activity?.finish()
-            activity?.startActivity(intent)
-        }
+        val myPostsRv = binding.myPostsRV
+        myPostsRv.layoutManager = GridLayoutManager(requireContext(), 2)
+        myPostsRv.setHasFixedSize(true)
+        myPostsRv.adapter = myPostsAdapter
+        myPostsAdapter.setItemListener(object : MyPostsAdapter.onItemClickListener {
+            override fun onItemClick(posts: Posts) {
+                val userEmailKey = posts.userEmailPosts
+                //val userName = user.userName
+                Toast.makeText(requireContext(), userEmailKey, Toast.LENGTH_SHORT).show()
+            }
+        })
+        observeHomePosts()
 
         return root
+    }
+
+    private fun observeHomePosts() {
+        PostsRepository.getMyPostsList().observe(requireActivity()) { postsList ->
+            myPostsAdapter.setListData(postsList)
+            myPostsAdapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun bottomSheetDialog() {
+        val bottomSheetDialog = BottomSheetDialog(requireContext())
+        bottomSheetDialog.setContentView(R.layout.bottom_sheet_layout)
+        val logoutLayout = bottomSheetDialog.findViewById<LinearLayout>(R.id.layoutLogout)
+        val deleteLayout = bottomSheetDialog.findViewById<LinearLayout>(R.id.layoutDelete)
+        val prefs = requireContext().getSharedPreferences(
+            getString(R.string.prefs_file),
+            Context.MODE_PRIVATE
+        ).edit()
+        logoutLayout?.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+            bottomSheetDialog.dismiss()
+            Intent(requireContext(), LoginActivity::class.java).also {
+                startActivity(it)
+            }
+            prefs.clear()
+            prefs.apply()
+            activity?.finish()
+
+        }
+        deleteLayout?.setOnClickListener {
+            val builder = AlertDialog.Builder(requireContext())
+            with(builder)
+            {
+                setMessage("Want to delete?")
+                    .setPositiveButton(
+                        "OK"
+                    ) { _, _ ->
+                        Intent(requireContext(), LoginActivity::class.java).also {
+                            startActivity(it)
+                        }
+                        activity?.finish()
+
+                        db.collection("Users").document(user.email.toString()).delete()
+
+                        db.collection("Posts")
+                            .whereEqualTo("userEmailPosts", user.email.toString()).get()
+                            .addOnSuccessListener {
+                                for (document in it) {
+                                    db.collection("Posts").document(document.id).delete()
+                                }
+                            }.addOnFailureListener { exception ->
+                                binding.userNameProfile.text = "Error al cargar"
+                                binding.textUser.text = "Error al cargar"
+                                binding.profileImage.setImageResource(R.drawable.account)
+                            }
+
+                        val user2 = Firebase.auth.currentUser!!
+                        Thread.sleep(500)
+                        user2.delete()
+                        FirebaseAuth.getInstance().signOut()
+                        prefs.clear()
+                        prefs.apply()
+
+
+                    }
+                    .setNegativeButton(
+                        "CANCEL"
+                    ) { dialog, _ ->
+                        dialog.cancel()
+                    }
+                show()
+            }
+
+            bottomSheetDialog.dismiss()
+        }
+        bottomSheetDialog.show()
     }
 
     override fun onDestroyView() {
