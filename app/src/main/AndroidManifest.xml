@@ -41,10 +41,10 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".SignInActivity"
+            android:name=".ui.auth.SignInActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".ui.auth.LoginActivity"
             android:exported="false" />
 
         <meta-data

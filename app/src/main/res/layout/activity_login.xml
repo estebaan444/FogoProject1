@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/purple_500"
-    tools:context=".LoginActivity">
+    tools:context=".ui.auth.LoginActivity">
     <ImageView
         android:id="@+id/userImageView"
         android:layout_width="244dp"

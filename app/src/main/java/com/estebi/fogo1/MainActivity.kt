@@ -13,6 +13,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.estebi.fogo1.databinding.ActivityMain2Binding
 import com.estebi.fogo1.repository.auth.AuthRepository.Companion.db
 import com.estebi.fogo1.repository.user.CheckUserData.Companion.checkUserDataGoogle
+import com.estebi.fogo1.ui.auth.LoginActivity
 import com.estebi.fogo1.ui.userSignUpData.UserDataActivity
 import com.estebi.fogo1.ui.userSignUpData.UserDataSignUpActivity
 import com.google.firebase.auth.FirebaseAuth

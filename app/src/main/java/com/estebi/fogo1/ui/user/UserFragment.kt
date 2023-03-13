@@ -12,7 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import com.estebi.fogo1.LoginActivity
+import com.estebi.fogo1.ui.auth.LoginActivity
 import com.estebi.fogo1.R
 import com.estebi.fogo1.databinding.FragmentUserBinding
 import com.estebi.fogo1.models.Posts

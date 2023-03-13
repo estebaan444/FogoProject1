@@ -147,13 +147,16 @@ class SignInActivity : AppCompatActivity() {
         }
     }
 }*/
-package com.estebi.fogo1
+package com.estebi.fogo1.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.estebi.fogo1.MainActivity
+import com.estebi.fogo1.ProviderType
+import com.estebi.fogo1.R
 import com.estebi.fogo1.models.User
 import com.estebi.fogo1.repository.auth.AuthRepository
 import com.google.android.gms.auth.api.signin.GoogleSignIn

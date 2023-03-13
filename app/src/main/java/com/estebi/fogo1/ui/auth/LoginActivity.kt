@@ -1,4 +1,4 @@
-package com.estebi.fogo1
+package com.estebi.fogo1.ui.auth
 
 import android.content.Context
 import android.content.Intent
@@ -6,6 +6,9 @@ import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.estebi.fogo1.MainActivity
+import com.estebi.fogo1.ProviderType
+import com.estebi.fogo1.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
