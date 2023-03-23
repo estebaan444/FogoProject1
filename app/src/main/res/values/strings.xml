@@ -49,4 +49,16 @@
     <string name="description">Description</string>
     <string name="up_post_button">Up post!</string>
     <string name="todos">TODO</string>
+    <string name="nameOfOtherUser">TextView</string>
+    <string name="todo3">TODO</string>
+    <string name="update_post">Update Post</string>
+    <string name="titleUpdatePost">Title</string>
+    <string name="update_post_btn">Update Post</string>
+    <string name="delete_your_post">Delete your post</string>
+    <string name="update_your_profile">Update Your Profile</string>
+    <string name="name">Name</string>
+    <string name="update_password">Update Password</string>
+    <string name="repeat_password">Repeat Password</string>
+    <string name="update_profile">Update profile</string>
+    <string name="delete_profile">Delete profile</string>
 </resources>

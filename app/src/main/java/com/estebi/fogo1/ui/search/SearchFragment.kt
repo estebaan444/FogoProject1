@@ -1,5 +1,6 @@
 package com.estebi.fogo1.ui.search
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,8 @@ import com.estebi.fogo1.databinding.FragmentSearchBinding
 import com.estebi.fogo1.models.User
 import com.estebi.fogo1.repository.user.SearchUserRepository.Companion.getUserNameList
 import com.estebi.fogo1.repository.user.SearchUserRepository.Companion.getUserNameListFiltered
+import com.estebi.fogo1.ui.goToUser.GoToUserActivity
+import com.estebi.fogo1.ui.search.SearchViewModel.Companion.getUserEmailKey
 
 class SearchFragment : Fragment() {
 
@@ -42,9 +45,11 @@ class SearchFragment : Fragment() {
         userRecyclerView.adapter = userAdapter
         userAdapter.setItemListener(object : UserAdapter.onItemClickListener {
             override fun onItemClick(user: User) {
-                val userEmailKey = user.userEmail
-                //val userName = user.userName
-                Toast.makeText(requireContext(), userEmailKey, Toast.LENGTH_SHORT).show()
+                var userEmailKey = user.userEmail
+                Intent(requireContext(), GoToUserActivity::class.java).apply {
+                    startActivity(this)
+                }
+                getUserEmailKey = userEmailKey
             }
         })
         observeUser(searchView.toString())

@@ -19,6 +19,15 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ui.updateProfile.UpdateGoogleProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.updateProfile.UpdateProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.goToUpdatePost.GoToUpdatePostActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.goToUser.GoToUserActivity"
             android:exported="false" />
         <activity

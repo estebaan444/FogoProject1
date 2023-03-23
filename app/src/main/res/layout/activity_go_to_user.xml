@@ -6,4 +6,61 @@
     android:layout_height="match_parent"
     tools:context=".ui.goToUser.GoToUserActivity">
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/userImgOfSelect"
+        android:layout_width="94dp"
+        android:layout_height="97dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="44dp"
+        android:layout_marginBottom="55dp"
+        android:elevation="20dp"
+        android:padding="0dp"
+        android:src="@drawable/galleryaddpost"
+        app:layout_constraintBottom_toTopOf="@+id/rvOfSelectedUser"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ImageContrastCheck" />
+
+    <TextView
+        android:id="@+id/userNameOfSelect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/nameOfOtherUser"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userImgOfSelect" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvOfSelectedUser"
+        android:layout_width="391dp"
+        android:layout_height="482dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userImgOfSelect" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="436dp"
+        android:backgroundTint="@color/purple_500"
+        android:clickable="true"
+        android:contentDescription="@string/todo3"
+        android:tint="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.954"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userNameOfSelect"
+        app:srcCompat="@android:drawable/stat_notify_chat"
+        tools:ignore="SpeakableTextPresentCheck,ImageContrastCheck" />
 </androidx.constraintlayout.widget.ConstraintLayout>

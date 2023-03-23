@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.estebi.fogo1.databinding.FragmentHomeBinding
@@ -32,25 +34,36 @@ class HomeFragment : Fragment() {
         (activity as AppCompatActivity).supportActionBar?.hide()
 
         val homeRecyclerView = binding.recyclerHomePosts
-        homeRecyclerView.layoutManager = LinearLayoutManager(requireContext()/*, LinearLayoutManager.HORIZONTAL, false*/)
+        homeRecyclerView.layoutManager =
+            LinearLayoutManager(requireContext()/*, LinearLayoutManager.HORIZONTAL, false*/)
         homeRecyclerView.setHasFixedSize(true)
         homeRecyclerView.adapter = homeAdapter
         homeAdapter.setItemListener(object : HomePostsAdapter.onItemClickListener {
             override fun onItemClick(posts: Posts) {
-                val userEmailKey = posts.userEmailPosts
-                //val userName = user.userName
-                Toast.makeText(requireContext(), userEmailKey, Toast.LENGTH_SHORT).show()
+                val postDesc = posts.postDesc
+                val builder = AlertDialog.Builder(requireContext())
+                with(builder)
+                {
+                    setTitle("The recipe of ${posts.titlePost}")
+                    setMessage(postDesc)
+                    setPositiveButton("OK") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    show()
+                }
             }
         })
         observeHomePosts()
         return root
     }
+
     private fun observeHomePosts() {
         PostsRepository.getPostsList().observe(requireActivity()) { postsList ->
             homeAdapter.setListData(postsList)
             homeAdapter.notifyDataSetChanged()
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

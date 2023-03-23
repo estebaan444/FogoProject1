@@ -10,4 +10,7 @@ class SearchViewModel : ViewModel() {
         value = "This is Search Fragment"
     }
     val text: LiveData<String> = _text
+    companion object{
+        var getUserEmailKey = ""
+    }
 }

@@ -11,12 +11,19 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider.NewInstanceFactory.Companion.instance
 import androidx.recyclerview.widget.GridLayoutManager
 import com.estebi.fogo1.ui.auth.LoginActivity
 import com.estebi.fogo1.R
 import com.estebi.fogo1.databinding.FragmentUserBinding
 import com.estebi.fogo1.models.Posts
 import com.estebi.fogo1.repository.posts.PostsRepository
+import com.estebi.fogo1.ui.goToUpdatePost.GoToUpdatePostActivity
+import com.estebi.fogo1.ui.goToUpdatePost.GoToUpdatePostViewModel
+import com.estebi.fogo1.ui.goToUpdatePost.GoToUpdatePostViewModel.Companion.userEmailPostSVM
+import com.estebi.fogo1.ui.goToUpdatePost.GoToUpdatePostViewModel.Companion.userPostIdSVM
+import com.estebi.fogo1.ui.updateProfile.UpdateGoogleProfileActivity
+import com.estebi.fogo1.ui.updateProfile.UpdateProfileActivity
 import com.estebi.fogo1.ui.user.adapter.MyPostsAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
@@ -25,6 +32,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
+import io.grpc.InternalChannelz.instance
 
 
 class UserFragment : Fragment() {
@@ -76,16 +84,19 @@ class UserFragment : Fragment() {
         myPostsAdapter.setItemListener(object : MyPostsAdapter.onItemClickListener {
             override fun onItemClick(posts: Posts) {
                 val userEmailKey = posts.userEmailPosts
-                //val userName = user.userName
-                Toast.makeText(requireContext(), userEmailKey, Toast.LENGTH_SHORT).show()
+                val userId = posts.postId
+                userEmailPostSVM = userEmailKey
+                userPostIdSVM = userId
+                val intent = Intent(requireContext(), GoToUpdatePostActivity::class.java)
+                startActivity(intent)
             }
         })
-        observeHomePosts()
+        observeMyPosts()
 
         return root
     }
 
-    private fun observeHomePosts() {
+    private fun observeMyPosts() {
         PostsRepository.getMyPostsList().observe(requireActivity()) { postsList ->
             myPostsAdapter.setListData(postsList)
             myPostsAdapter.notifyDataSetChanged()
@@ -97,10 +108,29 @@ class UserFragment : Fragment() {
         bottomSheetDialog.setContentView(R.layout.bottom_sheet_layout)
         val logoutLayout = bottomSheetDialog.findViewById<LinearLayout>(R.id.layoutLogout)
         val deleteLayout = bottomSheetDialog.findViewById<LinearLayout>(R.id.layoutDelete)
+        val editLayout = bottomSheetDialog.findViewById<LinearLayout>(R.id.editProfile)
         val prefs = requireContext().getSharedPreferences(
             getString(R.string.prefs_file),
             Context.MODE_PRIVATE
         ).edit()
+
+        editLayout?.setOnClickListener {
+            bottomSheetDialog.dismiss()
+            val provider = FirebaseAuth.getInstance().currentUser?.providerData?.get(1)?.providerId
+
+            Toast.makeText(requireContext(), provider, Toast.LENGTH_SHORT).show()
+            if (provider == "password"){
+                Intent(requireContext(), UpdateProfileActivity::class.java).also {
+                    startActivity(it)
+                }
+            }else{
+                Intent(requireContext(), UpdateGoogleProfileActivity::class.java).also {
+                    startActivity(it)
+                }
+            }
+
+        }
+
         logoutLayout?.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
             bottomSheetDialog.dismiss()
@@ -133,7 +163,7 @@ class UserFragment : Fragment() {
                                 for (document in it) {
                                     db.collection("Posts").document(document.id).delete()
                                 }
-                            }.addOnFailureListener { exception ->
+                            }.addOnFailureListener { _ ->
                                 binding.userNameProfile.text = "Error al cargar"
                                 binding.textUser.text = "Error al cargar"
                                 binding.profileImage.setImageResource(R.drawable.account)
