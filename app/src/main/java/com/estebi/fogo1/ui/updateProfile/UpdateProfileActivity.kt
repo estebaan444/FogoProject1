@@ -1,5 +1,6 @@
 package com.estebi.fogo1.ui.updateProfile
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Context
@@ -32,11 +33,16 @@ class UpdateProfileActivity : AppCompatActivity() {
     private var currentFile: Uri? = null
     private var url: String = ""
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
-
         setContentView(R.layout.activity_update_profile)
+
+        val goBackButtonUpdateProfile = findViewById<ImageView>(R.id.goBackUpdateProfile)
+        goBackButtonUpdateProfile.setOnClickListener {
+            finish()
+        }
         retrieveData()
         selectImageGallery()
         uploadImageToStorageAndUpdateProfile()

@@ -76,20 +76,7 @@
                         android:orientation="horizontal"
                         android:weightSum="3">
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="My Posts"
-                            android:textColor="@color/black"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
 
-                        <View
-                            android:layout_width="1dp"
-                            android:layout_height="match_parent"
-                            android:background="#79D6D1D1" />
 
                         <TextView
                             android:id="@+id/configButton"
@@ -101,6 +88,12 @@
                             android:textColor="@color/black"
                             android:textSize="14sp"
                             android:textStyle="bold" />
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginStart="5dp"
+                            android:padding="2dp"
+                            android:src="@drawable/baseline_settings_24" />
 
 
                     </LinearLayout>
@@ -168,7 +161,7 @@
                                 android:layout_height="30dp"
                                 android:layout_marginStart="5dp"
                                 android:padding="2dp"
-                                android:src="@drawable/ic_dashboard_black_24dp" />
+                                android:src="@drawable/baseline_mail_24" />
 
                             <TextView
                                 android:layout_width="wrap_content"

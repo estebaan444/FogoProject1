@@ -118,7 +118,6 @@ class UserFragment : Fragment() {
             bottomSheetDialog.dismiss()
             val provider = FirebaseAuth.getInstance().currentUser?.providerData?.get(1)?.providerId
 
-            Toast.makeText(requireContext(), provider, Toast.LENGTH_SHORT).show()
             if (provider == "password"){
                 Intent(requireContext(), UpdateProfileActivity::class.java).also {
                     startActivity(it)

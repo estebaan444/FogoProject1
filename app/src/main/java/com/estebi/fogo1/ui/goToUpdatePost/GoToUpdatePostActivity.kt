@@ -1,11 +1,9 @@
 package com.estebi.fogo1.ui.goToUpdatePost
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.estebi.fogo1.MainActivity
@@ -17,9 +15,15 @@ import com.estebi.fogo1.ui.goToUpdatePost.GoToUpdatePostViewModel.Companion.user
 import com.estebi.fogo1.ui.user.UserFragment
 
 class GoToUpdatePostActivity : AppCompatActivity() {
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_go_to_update_post)
+
+        val goBackButton = findViewById<ImageView>(R.id.goBackUpdatePostFragment)
+        goBackButton.setOnClickListener {
+            finish()
+        }
 
         supportActionBar?.hide()
 

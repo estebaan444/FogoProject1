@@ -1,5 +1,7 @@
 package com.estebi.fogo1.ui.goToUser
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
@@ -14,6 +16,7 @@ import com.estebi.fogo1.models.Posts
 import com.estebi.fogo1.repository.auth.AuthRepository.Companion.db
 import com.estebi.fogo1.repository.posts.PostsRepository
 import com.estebi.fogo1.ui.goToUser.adapter.GoToUserAdapter
+import com.estebi.fogo1.ui.search.SearchFragment
 import com.estebi.fogo1.ui.search.SearchViewModel.Companion.getUserEmailKey
 import com.estebi.fogo1.ui.user.adapter.MyPostsAdapter
 import com.google.firebase.auth.FirebaseAuth
@@ -22,12 +25,18 @@ import com.squareup.picasso.RequestCreator
 
 class GoToUserActivity : AppCompatActivity() {
     private val goToUserAdapter = GoToUserAdapter()
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar?.hide()
         setContentView(R.layout.activity_go_to_user)
         var userNameTxt = findViewById<TextView>(R.id.userNameOfSelect)
         val userImgSelect = findViewById<ImageView>(R.id.userImgOfSelect)
 
+        val goBackButton = findViewById<ImageView>(R.id.goBackSearchFragment)
+        goBackButton.setOnClickListener {
+            finish()
+        }
         db.collection("Users").document(getUserEmailKey)
             .get()
             .addOnSuccessListener { document ->

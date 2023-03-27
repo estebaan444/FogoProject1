@@ -46,8 +46,8 @@ class SearchFragment : Fragment() {
         userAdapter.setItemListener(object : UserAdapter.onItemClickListener {
             override fun onItemClick(user: User) {
                 var userEmailKey = user.userEmail
-                Intent(requireContext(), GoToUserActivity::class.java).apply {
-                    startActivity(this)
+                    Intent(requireContext(), GoToUserActivity::class.java).apply {
+                        startActivity(this)
                 }
                 getUserEmailKey = userEmailKey
             }
