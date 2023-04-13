@@ -12,24 +12,23 @@ import com.estebi.fogo1.repository.posts.GoToUpdatePostRep.Companion.deleteMyPos
 import com.estebi.fogo1.repository.posts.GoToUpdatePostRep.Companion.getPostsDataOfSpecify
 import com.estebi.fogo1.repository.posts.GoToUpdatePostRep.Companion.updateMyPost
 import com.estebi.fogo1.ui.goToUpdatePost.GoToUpdatePostViewModel.Companion.userPostIdSVM
-import com.estebi.fogo1.ui.user.UserFragment
 
 class GoToUpdatePostActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_go_to_update_post)
+        supportActionBar?.hide()
+
 
         val goBackButton = findViewById<ImageView>(R.id.goBackUpdatePostFragment)
         goBackButton.setOnClickListener {
             finish()
         }
 
-        supportActionBar?.hide()
-
-        getDataToUpdate()
-        updatePost()
         deletePost()
+        updatePost()
+        getDataToUpdate()
     }
 
     private fun getDataToUpdate() {
@@ -65,12 +64,12 @@ class GoToUpdatePostActivity : AppCompatActivity() {
                 setTitle("Delete post")
                 setMessage("Are you sure you want to delete this post?")
                 setPositiveButton("Yes") { _, _ ->
-                    deleteMyPost(userPostIdSVM)
                     Intent(this@GoToUpdatePostActivity, MainActivity::class.java).also {
                         startActivity(it)
                     }
                     finish()
                     Toast.makeText(this@GoToUpdatePostActivity, "Post deleted!", Toast.LENGTH_SHORT).show()
+                    deleteMyPost(userPostIdSVM)
                 }
                 setNegativeButton("Cancel") { dialog, _ ->
                     dialog.dismiss()

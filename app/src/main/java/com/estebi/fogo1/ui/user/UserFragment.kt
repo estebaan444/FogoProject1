@@ -77,6 +77,10 @@ class UserFragment : Fragment() {
         binding.configButton.setOnClickListener {
             bottomSheetDialog()
         }
+
+        binding.configIconButton.setOnClickListener {
+            bottomSheetDialog()
+        }
         val myPostsRv = binding.myPostsRV
         myPostsRv.layoutManager = GridLayoutManager(requireContext(), 2)
         myPostsRv.setHasFixedSize(true)

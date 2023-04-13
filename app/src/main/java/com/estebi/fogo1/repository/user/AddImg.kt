@@ -10,7 +10,11 @@ class AddImg(val context: Context) {
     companion object {
         val db = Firebase.firestore
         fun addImgSignUp(email: String, url: String) {
-            db.collection("Users").document(email).update("userImg", url)
+            db.collection("Users").document(email).update("userImg", url).addOnSuccessListener{
+                println("Success")
+            }.addOnFailureListener{
+                println("Failure")
+            }
         }
     }
 }

@@ -106,6 +106,7 @@ class MainActivity : AppCompatActivity() {
                     Log.w(ContentValues.TAG, "Listen failed.", e)
                     return@addSnapshotListener
                 }
+
                 val checkStringImg =""
                 if (snapshot != null) {
                     for (document in snapshot) {

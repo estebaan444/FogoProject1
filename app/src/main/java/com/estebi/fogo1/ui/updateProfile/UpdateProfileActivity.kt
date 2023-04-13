@@ -104,6 +104,21 @@ class UpdateProfileActivity : AppCompatActivity() {
                 }.addOnFailureListener {
                     Log.d("AddPostFragment", "Failed to update: ${it.message}")
                 }
+
+                db.collection("Posts").whereEqualTo("userEmailPosts", user).get()
+                    .addOnSuccessListener { documents ->
+                        for (document in documents) {
+                            db.collection("Posts").document(document.id).update(
+                                "userNamePosts", updateProfileName.text.toString()
+                            ).addOnSuccessListener {
+                                Log.d("AddPostFragment", "Updated")
+                            }.addOnFailureListener {
+                                Log.d("AddPostFragment", "Failed to update: ${it.message}")
+                            }
+                        }
+                    }.addOnFailureListener {
+                        Log.d("AddPostFragment", "Failed to update: ${it.message}")
+                    }
             }
             try {
                 currentFile?.let {
