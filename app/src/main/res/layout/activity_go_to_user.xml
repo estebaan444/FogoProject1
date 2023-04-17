@@ -68,19 +68,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userImgOfSelect" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="436dp"
-        android:backgroundTint="@color/purple_500"
-        android:clickable="true"
-        android:contentDescription="@string/todo3"
-        android:tint="@null"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.954"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userNameOfSelect"
-        app:srcCompat="@android:drawable/stat_notify_chat"
-        tools:ignore="SpeakableTextPresentCheck,ImageContrastCheck" />
 </androidx.constraintlayout.widget.ConstraintLayout>

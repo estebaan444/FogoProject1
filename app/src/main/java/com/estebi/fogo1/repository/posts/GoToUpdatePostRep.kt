@@ -46,10 +46,32 @@ class GoToUpdatePostRep(val context: Context) {
             return mutableData
         }
 
-        fun deleteMyPost(postId: String){
+/*        fun deleteMyPost(postId: String){
             db.collection("Posts").document(postId).delete().addOnSuccessListener {
                 Log.d(ContentValues.TAG, "DocumentSnapshot successfully deleted!")
-            }.addOnFailureListener { e -> Log.w(ContentValues.TAG, "Error deleting document", e) }
+            }
+                .addOnFailureListener { e -> Log.w(ContentValues.TAG, "Error deleting document", e)
+            }
+        }*/
+
+        fun deleteMyPost(postId: String){
+            val db = Firebase.firestore
+            db.collection("Posts").whereEqualTo("postId", postId)
+                .addSnapshotListener { snapshot, e ->
+                    if (e != null) {
+                        Log.w(ContentValues.TAG, "Listen failed.", e)
+                        return@addSnapshotListener
+                    }
+                    if (snapshot != null) {
+                        for (document in snapshot) {
+                            db.collection("Posts").document(document.id).delete().addOnSuccessListener {
+                                Log.d(ContentValues.TAG, "DocumentSnapshot successfully deleted!")
+                            }
+                                .addOnFailureListener { e -> Log.w(ContentValues.TAG, "Error deleting document", e)
+                                }
+                        }
+                    }
+                }
         }
 
         fun updateMyPost(postId: String, titlePost: String, postDesc: String) {

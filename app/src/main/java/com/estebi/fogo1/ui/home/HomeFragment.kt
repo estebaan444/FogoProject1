@@ -33,7 +33,6 @@ class HomeFragment : Fragment() {
 
         (activity as AppCompatActivity).supportActionBar?.hide()
 
-        binding.progressBar.visibility = View.VISIBLE
 
         val homeRecyclerView = binding.recyclerHomePosts
         homeRecyclerView.layoutManager =
@@ -63,7 +62,6 @@ class HomeFragment : Fragment() {
         PostsRepository.getPostsList().observe(requireActivity()) { postsList ->
             homeAdapter.setListData(postsList)
             homeAdapter.notifyDataSetChanged()
-            binding.progressBar.visibility = View.GONE
         }
     }
 

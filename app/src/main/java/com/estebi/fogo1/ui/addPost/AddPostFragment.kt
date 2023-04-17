@@ -8,18 +8,22 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.estebi.fogo1.R
 import com.estebi.fogo1.databinding.FragmentAddPostBinding
@@ -31,8 +35,10 @@ import com.google.firebase.storage.ktx.storage
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.label.ImageLabeling
 import com.google.mlkit.vision.label.defaults.ImageLabelerOptions
+import kotlinx.coroutines.Delay
 import java.io.ByteArrayOutputStream
 import java.util.*
+import kotlin.concurrent.schedule
 
 
 class AddPostFragment : Fragment() {
@@ -210,8 +216,10 @@ class AddPostFragment : Fragment() {
                     ContentValues.TAG,
                     "DocumentSnapshot successfully written!"
                 )
-                findNavController().navigate(R.id.navigation_home)
-            }
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Navigation.findNavController(requireView()).navigate(R.id.navigation_home)
+                }, 1000)
+           }
             .addOnFailureListener { e ->
                 Log.w(
                     ContentValues.TAG,

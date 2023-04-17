@@ -1,11 +1,15 @@
 package com.estebi.fogo1.ui.goToUpdatePost
 
 import android.annotation.SuppressLint
+import android.app.ProgressDialog.show
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.Navigation
 import com.estebi.fogo1.MainActivity
 import com.estebi.fogo1.R
 import com.estebi.fogo1.repository.posts.GoToUpdatePostRep.Companion.deleteMyPost
@@ -64,12 +68,17 @@ class GoToUpdatePostActivity : AppCompatActivity() {
                 setTitle("Delete post")
                 setMessage("Are you sure you want to delete this post?")
                 setPositiveButton("Yes") { _, _ ->
-                    Intent(this@GoToUpdatePostActivity, MainActivity::class.java).also {
-                        startActivity(it)
-                    }
+                    val intent = Intent(this@GoToUpdatePostActivity, MainActivity::class.java)
+                    startActivity(intent)
                     finish()
+
                     Toast.makeText(this@GoToUpdatePostActivity, "Post deleted!", Toast.LENGTH_SHORT).show()
-                    deleteMyPost(userPostIdSVM)
+
+                    //add delay to delete post after user click on delete button to avoid error
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        deleteMyPost(userPostIdSVM)
+                    }, 1000)
+
                 }
                 setNegativeButton("Cancel") { dialog, _ ->
                     dialog.dismiss()
@@ -79,4 +88,3 @@ class GoToUpdatePostActivity : AppCompatActivity() {
         }
     }
 }
-
